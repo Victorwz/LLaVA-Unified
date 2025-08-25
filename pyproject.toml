@@ -14,18 +14,14 @@ classifiers = [
 ]
 dependencies = [
     "numpy==1.26.4", "torch==2.1.2", "torchvision==0.16.2",
-    "transformers", "tokenizers", "sentencepiece==0.1.99", "shortuuid",
-    "accelerate>=0.31.0", "peft", "bitsandbytes",
+    "transformers==4.45.0", "tokenizers", "sentencepiece==0.1.99", "shortuuid",
+    "accelerate==0.26.0", "peft", "bitsandbytes",
     "pydantic", "markdown2[all]", "scikit-learn==1.2.2",
     "gradio", "gradio_client", "pandas", "webdataset",
     "requests", "httpx", "uvicorn", "fastapi",
     "einops==0.6.1", "einops-exts==0.0.4", "timm==0.9.10", "evaluate", "protobuf",
-    "opencv-python",
+    "opencv-python", "deepspeed==0.15.0", "ninja", "wandb"
 ]
-
-[project.optional-dependencies]
-train = ["deepspeed==0.12.6", "ninja", "wandb"]
-build = ["build", "twine"]
 
 [project.urls]
 "Homepage" = "https://llava-vl.github.io"
