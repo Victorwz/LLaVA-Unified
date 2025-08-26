@@ -1,28 +1,24 @@
 #!/bin/bash
-# pip install -e ./
-# pip install -e ".[train]"
-# pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
-# pip install flash-attn --no-build-isolation
 
-deepspeed --num_gpus=8 llava/train/train_mem.py \
+deepspeed --master_port 29501 --num_gpus=8 llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path /mnt/raid5/weizhi/models/Qwen2.5-7B-Instruct \
+    --model_name_or_path Qwen/Qwen2.5-0.5B-Instruct \
     --version plain \
-    --data_path /mnt/raid5/weizhi/data/llava/images/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json \
-    --image_folder /mnt/raid5/weizhi/data/llava/images/llava/llava_pretrain/images/ \
-    --vision_tower google/siglip-so400m-patch14-384 \
+    --data_path /local/home/weizhiwang/data/llava/images/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json \
+    --image_folder /local/home/weizhiwang/data/llava/images/llava/llava_pretrain/images \
+    --vision_tower google/siglip2-so400m-patch14-384 \
     --mm_projector_type aapool_mlp \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -1 \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
-    --mm_num_image_tokens 64 \
+    --mm_num_image_tokens 144 \
     --bf16 True \
-    --output_dir /mnt/raid5/weizhi/checkpoints/lavia-qwen-2.5-instruct-pretrain-siglip-g-384-aapool-64 \
+    --output_dir /local/home/weizhiwang/checkpoints/llava-qwen-2.5-0.5b-instruct-pretrain-siglip2-384-aapool-144 \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 64 \
     --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 2 \
+    --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 24000 \
