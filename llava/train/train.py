@@ -1142,7 +1142,15 @@ def train(attn_implementation=None):
                 torch_dtype=(torch.bfloat16 if training_args.bf16 else None),
                 **bnb_model_from_pretrained_args
             )
-        elif "qwen" in model_args.model_name_or_path.lower():
+        elif "qwen3" in model_args.model_name_or_path.lower():
+            model = LlavaQwen3ForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                attn_implementation=attn_implementation,
+                torch_dtype=(torch.bfloat16 if training_args.bf16 else None),
+                **bnb_model_from_pretrained_args,
+            )
+        elif "qwen2" in model_args.model_name_or_path.lower():
             model = LlavaQwenForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
@@ -1240,7 +1248,7 @@ def train(attn_implementation=None):
     else:
         if "llama-3" in model_args.model_name_or_path.lower():
             tokenizer.pad_token = "<|finetune_right_pad_id|>"
-        elif "qwen" in model_args.model_name_or_path.lower():
+        elif "qwen2" in model_args.model_name_or_path.lower() or "qwen3" in model_args.model_name_or_path.lower():
             tokenizer.add_special_tokens({"additional_special_tokens": ["<s>"]})
             tokenizer.bos_token = "<s>"
         else:
